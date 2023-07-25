@@ -2,31 +2,55 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
 from common.json import ModelEncoder
-from .models import Salesperson
+from .models import Sale, AutomobileVO
 
 
-class SalespersonEncoder(ModelEncoder):
-    model = Salesperson
+class AutomobileVOEncoder(ModelEncoder):
+    model = AutomobileVO
     properties = [
-        "first_name",
-        "last_name",
-        "employee_id",
+        "vin",
+        "sold",
+        "import_href",
     ]
 
 
+class SalesEncoder(ModelEncoder):
+    model = Sale
+    properties = [
+        "automobile",
+        "salesperson",
+        "customer",
+        "price",
+    ]
+    encoders = {
+        "automobile": AutomobileVOEncoder()
+    }
+
+
 @require_http_methods(["GET", "POST"])
-def api_salesperson(request):
+def api_sales(request, automobile_vo_id=None):
     if request.method == "GET":
-        salesperson = Salesperson.objects.all()
+        if automobile_vo_id is None:
+            sales = Sale.objects.all()
+        else:
+            sales = Sale.filter(autos=automobile_vo_id)
         return JsonResponse(
-            {"saleperson": salesperson},
-            encoder=SalespersonEncoder
+            {"sales": sales},
+            encoder=SalesEncoder,
+            safe=False
         )
     else:
         content = json.loads(request.body)
-        employee = Salesperson.objects.create(**content)
+
+        automobile_href = content["automobile"]
+
+        automobile = AutomobileVO.objects.get(import_href=automobile_href)
+        content["automobile"] = automobile
+        sales = Sale.objects.create(**content)
+        print(sales)
+
         return JsonResponse(
-            employee,
-            encoder=SalespersonEncoder,
+            sales,
+            encoder=SalesEncoder,
             safe=False,
         )
