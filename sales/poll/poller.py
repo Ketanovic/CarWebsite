@@ -32,7 +32,7 @@ def poll(repeat=True):
 
                 )
         except Exception as e:
-            print("Error")
+
             print(e, file=sys.stderr)
 
         if (not repeat):

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 
 
@@ -44,4 +44,7 @@ class Sale(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"Sale ID: {self.id}"
+        return self.automobile
+
+    def get_api_url(self):
+        return reverse("api_sales", kwargs={"id": self.id})
