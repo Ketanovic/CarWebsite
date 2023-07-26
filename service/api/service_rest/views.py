@@ -25,9 +25,6 @@ class AppointmentListEncoder(ModelEncoder):
         "technician": TechnicianListEncoder
     }
 
-    def get_extra_data(self, o):
-        return {"technician": o.technician.name}
-
 
 @require_http_methods(["GET", "POST"])
 def api_list_technicians(request):
@@ -55,7 +52,7 @@ def api_delete_technician(request, id):
 
 
 @require_http_methods(["GET", "POST"])
-def api_list_appointments(request):
+def api_list_appointments(request, id):
     if request.method == "GET":
         appointments = Appointment.objects.all()
         return JsonResponse(
@@ -65,7 +62,7 @@ def api_list_appointments(request):
     else:
         content = json.loads(request.body)
         try:
-            technician = Technician.objects.get(id=content["technician"])
+            technician = Technician.objects.get(id)
             content["technician"] = technician
         except Technician.DoesNotExist:
             return JsonResponse(
