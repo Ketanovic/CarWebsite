@@ -72,7 +72,7 @@ def api_delete_salesperson(request, id):
             salesperson.delete()
             return JsonResponse(
                 {"message": "Salesperson has been deleted,"},
-                status=404,
+                status=200,
             )
         except Salesperson.DoesNotExist:
             return JsonResponse(
@@ -108,7 +108,7 @@ def api_delete_customer(request, id):
             customer.delete()
             return JsonResponse(
                 {"message": "Customer deleted successfully."},
-                status=204
+                status=200
             )
         except Customer.DoesNotExist:
             return JsonResponse(
@@ -185,7 +185,7 @@ def api_delete_sale(request, id):
             sale.delete()
             return JsonResponse(
                 {"message": "Sale deleted successfully."},
-                status=204
+                status=200
             )
         except Sale.DoesNotExist:
             return JsonResponse(
