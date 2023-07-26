@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 function Nav() {
@@ -22,11 +23,14 @@ function Nav() {
             <li className="nav-item">
               <NavLink className="nav-link" to="/create">Create shoe</NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/create-manufacturer">Create Manufacturer</NavLink> {/* Add this line */}
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
 export default Nav;
