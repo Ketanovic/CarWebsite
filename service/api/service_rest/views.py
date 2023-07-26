@@ -80,27 +80,29 @@ def api_list_appointments(request, id=None):
         except AutomobileVO.DoesNotExist:
             vin = AutomobileVO.objects.create(vin=vin, status=False)
 
-        technician = None
         try:
             technician = Technician.objects.get(pk=technician_id)
+            appointment = Appointment.objects.create(
+                date_time=date_time,
+                reason=reason,
+                status=status,
+                vin=vin,
+                customer=customer,
+                technician=technician,
+            )
+            return JsonResponse(
+                appointment,
+                encoder=AppointmentListEncoder,
+                safe=False
+            )
         except Technician.DoesNotExist:
             response = JsonResponse(
                 {"message": "Technician does not exist"},
                 status=404,
             )
+            return response
 
-        appointment = Appointment.objects.create(
-            date_time=date_time,
-            reason=reason,
-            status=status,
-            vin=vin,
-            customer=customer,
-            technician=technician,
-        )
-        return JsonResponse(
-            appointment,
-            encoder=AppointmentListEncoder,
-            safe=False
-        )
+
+
 
 # Create your views here.
