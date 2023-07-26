@@ -35,7 +35,7 @@ def api_automobiles(request):
                 {"message": "Could not create the automobile"}
             )
             response.status_code = 400
-            return response
+        return response
 
 
 @require_http_methods(["DELETE", "GET", "PUT"])
