@@ -47,6 +47,7 @@ MIDDLEWARE = [
 
 ALLOWED_HOSTS = [
     "localhost",
+    "project-beta-sales-api-1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
