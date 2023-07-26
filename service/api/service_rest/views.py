@@ -87,8 +87,6 @@ def api_list_appointments(request, id=None):
             response = JsonResponse(
                 {"message": "Technician does not exist"}, status=404,
             )
-<<<<<<< HEAD
-=======
             return response
 
         appointment = Appointment.objects.create(
@@ -103,23 +101,6 @@ def api_list_appointments(request, id=None):
             appointment,
             encoder=AppointmentListEncoder,
             safe=False,
-        )
-
-
->>>>>>> b34705852760f7c64a5a5e54cdcf817e51cd8350
-
-        appointment = Appointment.objects.create(
-            date_time=date_time,
-            reason=reason,
-            status=status,
-            vin=vin,
-            customer=customer,
-            technician=technician,
-        )
-        return JsonResponse(
-            appointment,
-            encoder=AppointmentListEncoder,
-            safe=False
         )
 
 # Create your views here.
