@@ -52,7 +52,7 @@ def api_delete_technician(request, id):
 
 
 @require_http_methods(["GET", "POST"])
-def api_list_appointments(request, id):
+def api_list_appointments(request, id=None):
     if request.method == "GET":
         appointments = Appointment.objects.all()
         return JsonResponse(
@@ -61,13 +61,28 @@ def api_list_appointments(request, id):
         )
     else:
         content = json.loads(request.body)
+        date_time = content.get("date_time")
+        reason = content.get("reason")
+        status = content.get("status")
+        vin = content.get("vin")
+        customer = content.get("customer")
+        technician = content.get("technician")
+
+        if not date_time or not reason or not status or not vin or not customer or not technician:
+            response = JsonResponse(
+                {"message": "Missing required fields"}, status=400,
+            )
+            return response
+
         try:
-            technician = Technician.objects.get(id)
-            content["technician"] = technician
+            vin = AutomobileVO.objects.get(vin=vin)
+        except AutomobileVO.DoesNotExist:
+            vin = AutomobileVO.objects.create(vin=vin, status=False)
+        try:
+            technician = Technician.objects.get(pk=technician)
         except Technician.DoesNotExist:
-            return JsonResponse(
-                {"message": "Invalid technician id"},
-                status=400,
+            response = JsonResponse(
+                {"message": "technician does not exist"}
             )
 
         appointment = Appointment.objects.create(**content)
