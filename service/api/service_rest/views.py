@@ -64,12 +64,12 @@ def api_list_appointments(request, id=None):
         content = json.loads(request.body)
         date_time = content.get("date_time")
         reason = content.get("reason")
-        sold = content.get("sold")
+        status = content.get("status")
         vin = content.get("vin")
         customer = content.get("customer")
         technician_id = content.get("technician_id")
 
-        if not date_time or not reason or not sold or not vin or not customer or not technician_id:
+        if not date_time or not reason or not status or not vin or not customer or not technician_id:
             response = JsonResponse(
                 {"message": "Missing required fields"}, status=400,
             )
@@ -78,7 +78,7 @@ def api_list_appointments(request, id=None):
         try:
             vin = AutomobileVO.objects.get(vin=vin)
         except AutomobileVO.DoesNotExist:
-            vin = AutomobileVO.objects.create(vin=vin, sold=False)
+            vin = AutomobileVO.objects.create(vin=vin, status=False)
 
         technician = None
         try:
@@ -92,7 +92,7 @@ def api_list_appointments(request, id=None):
         appointment = Appointment.objects.create(
             date_time=date_time,
             reason=reason,
-            sold=sold,
+            status=status,
             vin=vin,
             customer=customer,
             technician=technician,
