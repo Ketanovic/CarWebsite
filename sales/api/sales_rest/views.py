@@ -153,7 +153,26 @@ def api_sale(request, id=None):
         try:
             automobile = AutomobileVO.objects.get(vin=vin)
         except AutomobileVO.DoesNotExist:
-            automobile = AutomobileVO.objects.create(vin=vin, sold=False)
+            response = JsonResponse(
+                {"message": "Automobile with this 'vin' does not exist in the inventory."},
+                status=400,
+            )
+            return response
+
+        if automobile.sold:
+            response = JsonResponse(
+                {"message": "The automobile with this 'vin' has already been sold."},
+                status=400,
+            )
+            return response
+
+        existing_sale = Sale.objects.filter(automobile__vin=vin).first()
+        if existing_sale:
+            response = JsonResponse(
+                {"message": "This automobile has already been sold."},
+                status=400,
+            )
+            return response
         try:
             salesperson = Salesperson.objects.get(pk=salesperson_id)
         except Salesperson.DoesNotExist:
@@ -177,6 +196,9 @@ def api_sale(request, id=None):
             customer=customer,
             price=price
         )
+
+        automobile.sold = True
+        automobile.save()
 
         return JsonResponse(
             {"message": "Successfully created a Sale", "sale_id": sale.id},
