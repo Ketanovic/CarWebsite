@@ -13,6 +13,8 @@ function App(props) {
           <Route path="/" element={<MainPage />} />
         </Routes>
       </div>
-    </BrowserRouter>)}
+    </BrowserRouter>
+    );
+  }
 
-export default App
+export default App;
