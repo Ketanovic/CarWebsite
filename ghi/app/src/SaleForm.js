@@ -17,7 +17,7 @@ function SaleForm() {
         const response = await fetch(url)
         if (response.ok) {
             const data = await response.json()
-            setLocations(data.locations)
+            setAutomobile(data.automobile)
         }
     }
 
@@ -88,7 +88,7 @@ function SaleForm() {
                 <div className="mb-3">
               <select onChange={handleFormChange} required name="Automobile" id="Automobile" className="form-select">
                 <option value="">Choose a Automobile</option>
-                {Automobile.map(Automobile => {
+                {automobile.map(Automobile => {
                   return (
                     <option key={Automobile.href} value={Automobile.href}>{Automobile.vin}</option>
                   )

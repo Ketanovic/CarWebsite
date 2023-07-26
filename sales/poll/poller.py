@@ -19,7 +19,8 @@ def poll(repeat=True):
     while True:
         print('Sales poller polling for data')
         try:
-            response = requests.get("http://inventory-api:8100/api/automobile/")
+            response = requests.get("http://inventory-api:8100/api/manufacturers/"
+                                    )
 
             content = json.loads(response.content)
 

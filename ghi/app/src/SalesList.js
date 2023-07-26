@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React from "react"
 
 const handleDelete = async (item) => {
 
@@ -32,14 +32,14 @@ function SalesList(props) {
 
                     return (
 
-                        <div key = {sale.href}>
+                        <div key = {sales.href}>
                             <div className = "car-body">
-                                <h5 className = "car-title">{sale.automobile} </h5>
-                                <h3>{sale.salesperson}</h3>
-                                <h3>{sale.customer}</h3>
-                                <h3>{sale.automobile.id}</h3>
+                                <h5 className = "car-title">{sales.automobile} </h5>
+                                <h3>{sales.salesperson}</h3>
+                                <h3>{sales.customer}</h3>
+                                <h3>{sales.automobile.id}</h3>
 
-                                <button onClick={() => handleDelete(sale.href)}>Delete </button>
+                                <button onClick={() => handleDelete(sales.href)}>Delete </button>
                             </div>
 
                         </div>

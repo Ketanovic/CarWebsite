@@ -30,10 +30,15 @@ class SalesEncoder(ModelEncoder):
 @require_http_methods(["GET", "POST"])
 def api_sales(request, automobile_vo_id=None):
     if request.method == "GET":
+
         if automobile_vo_id is None:
             sales = Sale.objects.all()
         else:
-            sales = Sale.filter(autos=automobile_vo_id)
+            try:
+                sales = Sale.filter(autos=automobile_vo_id)
+            except AutomobileVO.DoesNotExist:
+                return JsonResponse({"message": "Invalid Automobile id"},
+                                    status=400)
         return JsonResponse(
             {"sales": sales},
             encoder=SalesEncoder,
@@ -44,13 +49,29 @@ def api_sales(request, automobile_vo_id=None):
 
         automobile_href = content["automobile"]
 
-        automobile = AutomobileVO.objects.get(import_href=automobile_href)
+        try:
+            automobile = AutomobileVO.objects.get(import_href=automobile_href)
+        except AutomobileVO.DoesNotExist:
+            return JsonResponse({"message": "Invalid location id"}, status=400)
         content["automobile"] = automobile
         sales = Sale.objects.create(**content)
-        print(sales)
 
         return JsonResponse(
             sales,
             encoder=SalesEncoder,
             safe=False,
+        )
+
+
+@require_http_methods(["GET", "DELETE"])
+def api_sale(request, id):
+    if request.method == "DELETE":
+        try:
+            count, _ = Sale.objects.filter(id=id).delete()
+        except Sale.DoesNotExist:
+            return JsonResponse(
+                {"message": "invalid Sale id"}, status=400
+            )
+        return JsonResponse({
+            "deleted": count > 0}
         )
