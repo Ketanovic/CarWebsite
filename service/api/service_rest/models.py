@@ -25,3 +25,4 @@ class Appointment(models.Model):
         related_name="technician",
         on_delete=models.PROTECT,
     )
+    objects = models.Manager()
