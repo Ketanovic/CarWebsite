@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
+import pika
 from common.json import ModelEncoder
 from .models import AutomobileVO, Technician, Appointment
 
@@ -69,7 +70,7 @@ def api_list_appointments(request, id=None):
         customer = content.get("customer")
         technician_id = content.get("technician_id")
 
-        if not date_time or not reason or not status or not vin or not customer or not technician_id:
+        if not date_time or not reason or status is None or not vin or not customer or not technician_id:
             response = JsonResponse(
                 {"message": "Missing required fields"}, status=400,
             )
@@ -87,6 +88,8 @@ def api_list_appointments(request, id=None):
             response = JsonResponse(
                 {"message": "Technician does not exist"}, status=404,
             )
+<<<<<<< HEAD
+            return response
 
         appointment = Appointment.objects.create(
             date_time=date_time,
@@ -99,7 +102,37 @@ def api_list_appointments(request, id=None):
         return JsonResponse(
             appointment,
             encoder=AppointmentListEncoder,
-            safe=False
+            safe=False,
         )
+
+
+@require_http_methods(["DELETE"])
+def api_delete_appointment(request, id):
+    if request.method == "DELETE":
+        count, _ = Appointment.objects.filter(id=id).delete()
+        return JsonResponse({"deleted": count > 0})
+
+
+@require_http_methods(["PUT"])
+def api_finish_appointment(request, pk):
+    appointment = Appointment.objects.get(id=pk)
+    appointment.approve()
+    body = {
+        "appointment_date": appointment.date_time,
+        "appointment_reason": appointment.reason,
+        "status": appointment.status,
+        "vin": appointment.vin,
+        "customer": appointment.customer,
+        "technician": appointment.employee_id
+    }
+    send_message("finish_appointment", body)
+    return JsonResponse(
+        appointment,
+        encoder=AppointmentListEncoder,
+        safe=False,
+    )
+=======
+>>>>>>> afcb83adf0daa39c43e3df8256583afc7902146d
+
 
 # Create your views here.
