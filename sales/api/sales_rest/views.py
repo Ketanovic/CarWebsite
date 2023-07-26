@@ -47,86 +47,27 @@ class SalesEncoder(ModelEncoder):
 
 
 @require_http_methods(["GET", "POST"])
-def api_saleperson(request):
+def api_salesperson(request):
     if request.method == "GET":
-        salesperson = Salesperson.objects.all()
+        employee = Salesperson.objects.all()
         return JsonResponse(
-            {"person": salesperson},
-            encoder=SalespersonEncoder,
+            {"Employee": employee},
+            encoder=SalespersonEncoder
         )
     else:
-        try:
-            content = json.loads(request.body)
-            employee = Salesperson.objects.create(**content)
-            return JsonResponse(
-                employee,
-                encoder=SalesEncoder,
-                safe=False,
-            )
-        except:
-            response = JsonResponse(
-                {"message": "Could not create the Salesperson"}
-            )
-            response.status_code = 400
-            return response
+        content = json.loads(request.body)
+        employee = Salesperson.objects.create(**content)
+        return JsonResponse(
+            employee,
+            encoder=SalesEncoder,
+            safe=False,
+        )
 
-
-@require_http_methods(["DELETE", "GET", "PUT"])
-def api_employee(request, pk):
-    if request.method == "GET":
-        try:
-            employee = Salesperson.objects.get(id=pk)
-            return JsonResponse(
-                employee,
-                encoder=SalespersonEncoder,
-                safe=False
-            )
-        except Salesperson.DoesNotExist:
-            response = JsonResponse({"message": "Does not exist"})
-            response.status_code = 404
-            return response
-    elif request.method == "DELETE":
-        try:
-            employee = Salesperson.objects.get(id=pk)
-            employee.delete()
-            return JsonResponse(
-                employee,
-                encoder=SalespersonEncoder,
-                safe=False,
-            )
-        except Salesperson.DoesNotExist:
-            return JsonResponse({"message": "Does not exist"})
-    else:
-        try:
-            content = json.loads(request.body)
-            employee = Salesperson.objects.get(id=pk)
-
-            props = ["name"]
-            for prop in props:
-                if prop in content:
-                    setattr(employee, prop, content[prop])
-            employee.save()
-            return JsonResponse(
-                employee,
-                encoder=SalespersonEncoder,
-                safe=False,
-            )
-        except Salesperson.DoesNotExist:
-            response = JsonResponse({"message": "Does not exist"})
-            response.status_code = 404
-            return response
-
-
-
-
-
-
-
-
-
-
-
-
+@require_http_methods(["DELETE"])
+def api_delete_salesperson(request, id):
+    if request.method == "DELETE":
+        count, _ = Salesperson.objects.filter(id=id).delete()
+        return JsonResponse({"deleted": count > 0})
 
 
 @require_http_methods(["GET", "POST"])
