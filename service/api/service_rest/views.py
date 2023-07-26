@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
@@ -43,6 +42,7 @@ def api_list_technicians(request):
             encoder=TechnicianListEncoder,
             safe=False,
         )
+
 
 @require_http_methods(["DELETE"])
 def api_delete_technician(request, id):

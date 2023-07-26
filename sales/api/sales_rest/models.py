@@ -14,18 +14,12 @@ class Salesperson(models.Model):
     last_name = models.CharField(max_length=100)
     employee_id = models.CharField(max_length=20, unique=True)
 
-    def get_api_url(self):
-        return reverse("api_salesperson", kwargs={"pk": self.id})
-
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     address = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} (Phone: {self.phone_number})"
 
 
 class Sale(models.Model):
