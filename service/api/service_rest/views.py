@@ -25,6 +25,9 @@ class AppointmentListEncoder(ModelEncoder):
         "technician": TechnicianListEncoder
     }
 
+    def get_extra_data(self, o):
+        return {"technician": o.technician.name}
+
 
 @require_http_methods(["GET", "POST"])
 def api_list_technicians(request):
@@ -62,11 +65,11 @@ def api_list_appointments(request):
     else:
         content = json.loads(request.body)
         try:
-            automobile = AutomobileVO.objects.get(id=content["vin"])
-            content["vin"] = automobile
-        except AutomobileVO.DoesNotExist:
+            technician = Technician.objects.get(id=content["technician"])
+            content["technician"] = technician
+        except Technician.DoesNotExist:
             return JsonResponse(
-                {"message": "Invalid Automobile id"},
+                {"message": "Invalid technician id"},
                 status=400,
             )
 
