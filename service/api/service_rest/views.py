@@ -45,7 +45,7 @@ def api_list_technicians(request):
         )
 
 @require_http_methods(["DELETE"])
-def api_delete_technician(request):
+def api_delete_technician(request, id):
     if request.method == "DELETE":
         count, _ = Technician.objects.filter(id=id).delete()
         return JsonResponse({"deleted": count > 0})
@@ -62,18 +62,17 @@ def api_list_appointments(request):
     else:
         content = json.loads(request.body)
         try:
-            technician_href = content["technician"]
-            technician = TechnicianListEncoder.objects.get(import_href=technician_href)
-            content["technician"] = technician
-        except Technician.DoesNotExist:
+            automobile = AutomobileVO.objects.get(id=content["vin"])
+            content["vin"] = automobile
+        except AutomobileVO.DoesNotExist:
             return JsonResponse(
-                {"message": "Invalid technician id"},
+                {"message": "Invalid Automobile id"},
                 status=400,
             )
 
-        technician = Appointment.objects.create(**content)
+        appointment = Appointment.objects.create(**content)
         return JsonResponse(
-                technician,
+                appointment,
                 encoder=AppointmentListEncoder,
                 safe=False,
         )
