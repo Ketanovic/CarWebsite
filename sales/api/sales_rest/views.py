@@ -48,28 +48,19 @@ class SalesEncoder(ModelEncoder):
 @require_http_methods(["GET", "POST"])
 def api_salesperson(request):
     if request.method == "GET":
-        employee = Salesperson.objects.all()
+        employee = Salesperson.objects.all().values()
         return JsonResponse(
-            {"Employee": employee},
-            encoder=SalespersonEncoder
+            {"Employee": list(employee)},
+            encoder=SalespersonEncoder,
+            safe=False
         )
     else:
         content = json.loads(request.body)
-        employee_id = content.get("employee_id")
-
-        try:
-            salesperson = Salesperson.objects.get(employee_id=employee_id)
-            return JsonResponse(
-                {"message": "Salesperson with employee_id '{employee_id}' already exists."},
-                status=400,
-            )
-        except Salesperson.DoesNotExist:
-            pass
         employee = Salesperson.objects.create(**content)
         return JsonResponse(
             employee,
             encoder=SalespersonEncoder,
-            safe=False,
+            safe=False
         )
 
 @require_http_methods(["DELETE"])
@@ -82,10 +73,11 @@ def api_delete_salesperson(request, id):
 @require_http_methods(["GET", "POST"])
 def api_customer(request):
     if request.method == "GET":
-        customer = Customer.objects.all()
+        customer = Customer.objects.all().values()
         return JsonResponse(
-            {"Customer": customer},
-            encoder=CustomerEncoder
+            {"Customer": list(customer)},
+            encoder=CustomerEncoder,
+            safe=False
         )
     else:
         content = json.loads(request.body)
@@ -107,9 +99,13 @@ def api_delete_customer(request, id):
 @require_http_methods(["GET", "POST"])
 def api_sale(request, id=None):
     if request.method == "GET":
-        sales = Sale.objects.all()
+        sales = Sale.objects.all().values()
+
+        for sale in sales:
+            sale['price'] = str(sale['price'])
+
         return JsonResponse(
-            {"sales": list(sales.values())},
+            {"sales": list(sales)},
             encoder=SalesEncoder,
             safe=False,
         )
@@ -153,7 +149,7 @@ def api_sale(request, id=None):
         )
 
         return JsonResponse(
-            {"message": "Successfully create a Sale", "sale_id": sale.id},
+            {"message": "Successfully created a Sale", "sale_id": sale.id},
             encoder=SalesEncoder,
         )
 
@@ -165,9 +161,11 @@ def api_delete_sale(request, id):
             sale = Sale.objects.get(id=id)
             sale.delete()
             return JsonResponse(
-                sale,
-                encoder=SalesEncoder,
-                safe=False,
+                {"message": "Sale deleted successfully."},
+                status=200
             )
         except Sale.DoesNotExist:
-            return JsonResponse({"message": "Does not exist"})
+            return JsonResponse(
+                {"message": "Sale not found."},
+                status=404,
+            )

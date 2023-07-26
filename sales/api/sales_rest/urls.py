@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    api_available_ids,
     api_customer,
     api_delete_customer,
     api_delete_sale,
@@ -28,5 +29,5 @@ urlpatterns = [
          name="api_sales"),
     path("sales/<int:id>/",
          api_delete_sale,
-         name="api_delete_sales")
+         name="api_delete_sales"),
 ]
