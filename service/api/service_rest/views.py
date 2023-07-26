@@ -56,8 +56,9 @@ def api_list_appointments(request, id=None):
     if request.method == "GET":
         appointments = Appointment.objects.all()
         return JsonResponse(
-            {"appointments": appointments},
-            encoder=AppointmentListEncoder
+            {"appointments": list(appointments.values())},
+            encoder=AppointmentListEncoder,
+            safe=False
         )
     else:
         content = json.loads(request.body)
@@ -66,7 +67,7 @@ def api_list_appointments(request, id=None):
         status = content.get("status")
         vin = content.get("vin")
         customer = content.get("customer")
-        technician = content.get("technician")
+        technician_id = content.get("technician")
 
         if not date_time or not reason or not status or not vin or not customer or not technician:
             response = JsonResponse(
@@ -78,19 +79,27 @@ def api_list_appointments(request, id=None):
             vin = AutomobileVO.objects.get(vin=vin)
         except AutomobileVO.DoesNotExist:
             vin = AutomobileVO.objects.create(vin=vin, status=False)
+
         try:
-            technician = Technician.objects.get(pk=technician)
+            technician = Technician.objects.get(pk=technician_id)
         except Technician.DoesNotExist:
             response = JsonResponse(
-                {"message": "technician does not exist"}
+                {"message": "Technician does not exist"},
+                status=404,
             )
 
-        appointment = Appointment.objects.create(**content)
-        return JsonResponse(
-                appointment,
-                encoder=AppointmentListEncoder,
-                safe=False,
+        appointment = Appointment.objects.create(
+            date_time=date_time,
+            reason=reason,
+            status=status,
+            vin=vin,
+            customer=customer,
+            technician=technician,
         )
-
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentListEncoder,
+            safe=False
+        )
 
 # Create your views here.
