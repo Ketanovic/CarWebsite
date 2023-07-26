@@ -80,6 +80,7 @@ def api_list_appointments(request, id=None):
         except AutomobileVO.DoesNotExist:
             vin = AutomobileVO.objects.create(vin=vin, status=False)
 
+        technician = None
         try:
             technician = Technician.objects.get(pk=technician_id)
         except Technician.DoesNotExist:
