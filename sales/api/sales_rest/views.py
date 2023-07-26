@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
@@ -56,12 +57,18 @@ def api_salesperson(request):
         )
     elif request.method == "POST":
         content = json.loads(request.body)
-        employee = Salesperson.objects.create(**content)
-        return JsonResponse(
-            employee,
-            encoder=SalespersonEncoder,
-            safe=False
-        )
+        try:
+            employee = Salesperson.objects.create(**content)
+            return JsonResponse(
+                employee,
+                encoder=SalespersonEncoder,
+                safe=False
+            )
+        except IntegrityError:
+            return JsonResponse(
+                {"error": "Employee ID has been used."},
+                status=400,
+            )
 
 
 @require_http_methods(["DELETE"])
