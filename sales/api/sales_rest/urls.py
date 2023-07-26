@@ -1,7 +1,6 @@
 from django.urls import path
 
 from .views import (
-    api_available_ids,
     api_customer,
     api_delete_customer,
     api_delete_sale,
