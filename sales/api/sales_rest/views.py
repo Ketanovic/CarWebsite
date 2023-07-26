@@ -63,6 +63,7 @@ def api_salesperson(request):
             safe=False,
         )
 
+
 @require_http_methods(["DELETE"])
 def api_delete_salesperson(request, id):
     if request.method == "DELETE":
@@ -71,42 +72,25 @@ def api_delete_salesperson(request, id):
 
 
 @require_http_methods(["GET", "POST"])
-def api_sales(request, automobile_vo_id=None):
+def api_customer(request):
     if request.method == "GET":
-        sales = Sale.objects.all()
+        customer = Customer.objects.all()
         return JsonResponse(
-            {"sales": sales},
-            encoder=SalesEncoder,
+            {"Customer": customer},
+            encoder=CustomerEncoder
         )
     else:
-        try:
-            content = json.loads(request.body)
-            sale_id = content["sale_id"]
-            sale = Sale.objects.get(pk=sale_id)
-            content["sale"] = sale
-            sales = Sale.objects.create(**content)
-            return JsonResponse(
-                sales,
-                encoder=SalesEncoder,
-                safe=False,
-            )
-        except:
-            response = JsonResponse(
-                {"message": "Could not create the sale"}
-            )
-            response.status_code = 400
-            return response
-
-
-@require_http_methods(["GET", "DELETE"])
-def api_sale(request, id):
-    if request.method == "DELETE":
-        try:
-            count, _ = Sale.objects.filter(id=id).delete()
-        except Sale.DoesNotExist:
-            return JsonResponse(
-                {"message": "invalid Sale id"}, status=400
-            )
-        return JsonResponse({
-            "deleted": count > 0}
+        content = json.loads(request.body)
+        customer = Customer.objects.create(**content)
+        return JsonResponse(
+            customer,
+            encoder=CustomerEncoder,
+            safe=False,
         )
+
+
+@require_http_methods(["DELETE"])
+def api_delete_customer(request, id):
+    if request.method == "DELETE":
+        count, _ = Customer.objects.filter(id=id).delete()
+        return JsonResponse({"deleted": count > 0})
