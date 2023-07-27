@@ -4,6 +4,7 @@ from django.db.models import QuerySet
 from datetime import datetime, date
 import decimal
 
+
 class DateEncoder(JSONEncoder):
     def default(self, o):
         if isinstance(o, (datetime, date)):
