@@ -1,9 +1,9 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
-import pika
 from common.json import ModelEncoder
 from .models import AutomobileVO, Technician, Appointment
+from django.shortcuts import get_object_or_404, redirect, render
 
 # Create your views here.
 
@@ -55,55 +55,42 @@ def api_delete_technician(request, id):
 @require_http_methods(["GET", "POST"])
 def api_list_appointments(request, id=None):
     if request.method == "GET":
-        appointments = Appointment.objects.all()
+        appointments = Appointment.objects.all().values()
         return JsonResponse(
-            {"appointments": list(appointments.values())},
+            {"appointments": list(appointments)},
             encoder=AppointmentListEncoder,
             safe=False
         )
-    else:
+    elif request.method == "POST":
         content = json.loads(request.body)
-        date_time = content.get("date_time")
-        reason = content.get("reason")
-        status = content.get("status")
         vin = content.get("vin")
-        customer = content.get("customer")
-        technician_id = content.get("technician_id")
-
-        if not date_time or not reason or status is None or not vin or not customer or not technician_id:
+        technician_id = content.get("technician")
+        
+        if not vin or not technician_id:
             response = JsonResponse(
                 {"message": "Missing required fields"}, status=400,
             )
             return response
 
         try:
-            vin = AutomobileVO.objects.get(vin=vin)
+            automobile = AutomobileVO.objects.get(vin=vin)
         except AutomobileVO.DoesNotExist:
-            vin = AutomobileVO.objects.create(vin=vin, status=False)
+            automobile = AutomobileVO.objects.create(vin=vin, status=False)
 
-        technician = None
         try:
             technician = Technician.objects.get(pk=technician_id)
         except Technician.DoesNotExist:
-            response = JsonResponse(
-                {"message": "Technician does not exist"}, status=404,
-            )
-<<<<<<< HEAD
-            return response
+            return JsonResponse(
+                {"message": "Technician does not exist"},
+                status=404)
 
         appointment = Appointment.objects.create(
-            date_time=date_time,
-            reason=reason,
-            status=status,
+            automobile=automobile,
             vin=vin,
-            customer=customer,
-            technician=technician,
+            technician=technician
+
         )
-        return JsonResponse(
-            appointment,
-            encoder=AppointmentListEncoder,
-            safe=False,
-        )
+        return JsonResponse({"message": "Appointment has been created successfully."}, status=201)
 
 
 @require_http_methods(["DELETE"])
@@ -114,25 +101,33 @@ def api_delete_appointment(request, id):
 
 
 @require_http_methods(["PUT"])
-def api_finish_appointment(request, pk):
-    appointment = Appointment.objects.get(id=pk)
-    appointment.approve()
-    body = {
-        "appointment_date": appointment.date_time,
-        "appointment_reason": appointment.reason,
-        "status": appointment.status,
-        "vin": appointment.vin,
-        "customer": appointment.customer,
-        "technician": appointment.employee_id
-    }
-    send_message("finish_appointment", body)
+def api_finish_appointment(request, id):
+    appointment = get_object_or_404(Appointment, id=id)
+    if appointment.status == 'finished':
+        return JsonResponse(
+            {'message': 'Appointment is already finished.'}, status=404,
+            )
+
+    appointment.status = 'finished'
+    appointment.save()
+
     return JsonResponse(
-        appointment,
-        encoder=AppointmentListEncoder,
-        safe=False,
+        {'message': 'Appointment has been finished.'}, status=200,
     )
-=======
->>>>>>> afcb83adf0daa39c43e3df8256583afc7902146d
 
 
+@require_http_methods(["PUT"])
+def api_cancel_appointment(request, id):
+    appointment = get_object_or_404(Appointment, id=id)
+    if appointment.status == 'cancelled':
+        return JsonResponse(
+            {'message': 'Appointment is already cancelled.'}, status=404,
+            )
+
+    appointment.status = 'cancelled'
+    appointment.save()
+
+    return JsonResponse(
+        {'message': 'Appointment has been cancelled.'}, status=200,
+    )
 # Create your views here.

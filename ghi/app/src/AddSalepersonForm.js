@@ -18,7 +18,7 @@ const AddSalespersonForm = () => {
       employee_id: employeeId,
     };
 
-    const url = "http://localhost:8090/api/salesperson";
+    const url = "zdoc";
 
     const fetchConfig = {
       method: "POST",
