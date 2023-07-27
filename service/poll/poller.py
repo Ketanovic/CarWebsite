@@ -18,16 +18,17 @@ def poll(repeat=True):
     while True:
         print('Service poller polling for data')
         try:
-            response = requests.get("http://project-beta-inventory-api-1:8000/api/automobiles/")
-            if response.status_code == 200:
-                content = response.json()
-                automobiles = content.get("autos", [])
-
-                for autodata in automobiles:
-                    vin = autodata.get("vin")
-                    if vin:
-                        _, created = AutomobileVO.objects.get_or_create(vin=vin, defaults={"sold": autodata.get("sold", False)})
-
+           response = requests.get("http://project-beta-inventory-api-1:8000/api/automobiles/")
+           content = json.loads(response.content)
+           autos = content["autos"]
+           for auto in autos:
+               AutomobileVO.objects.update_or_create(
+                   vin = auto["vin"],
+                   defaults={
+                       "vin": auto["vin"],
+                       "sold": auto["sold"]
+                   }
+               )
         except Exception as e:
             print(e, file=sys.stderr)
 

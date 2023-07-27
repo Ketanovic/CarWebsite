@@ -61,36 +61,26 @@ def api_list_appointments(request, id=None):
             encoder=AppointmentListEncoder,
             safe=False
         )
-    elif request.method == "POST":
+    else:
         content = json.loads(request.body)
-        vin = content.get("vin")
-        technician_id = content.get("technician")
-        
-        if not vin or not technician_id:
-            response = JsonResponse(
-                {"message": "Missing required fields"}, status=400,
-            )
+        try:
+            try:
+                technician_id = content["technician"]
+                technician = Technician.objects.get(id=technician_id)
+                content["technician"] = technician
+            except Technician.DoesNotExist:
+                return JsonResponse(
+                    {"message": "Does not match any technicians"}, status=400
+                )
+            vin = content["vin"]
+            if AutomobileVO.objects.filter(vin=vin).count() == 1:
+                content["is_vip"] = True
+            appointment = Appointment.objects.create(**content)
+            return JsonResponse(appointment, encoder=AppointmentListEncoder, safe=False)
+        except Exception:
+            response = JsonResponse({"message": "Could not create appointment"})
+            response.status_code = 400
             return response
-
-        try:
-            automobile = AutomobileVO.objects.get(vin=vin)
-        except AutomobileVO.DoesNotExist:
-            automobile = AutomobileVO.objects.create(vin=vin, status=False)
-
-        try:
-            technician = Technician.objects.get(pk=technician_id)
-        except Technician.DoesNotExist:
-            return JsonResponse(
-                {"message": "Technician does not exist"},
-                status=404)
-
-        appointment = Appointment.objects.create(
-            automobile=automobile,
-            vin=vin,
-            technician=technician
-
-        )
-        return JsonResponse({"message": "Appointment has been created successfully."}, status=201)
 
 
 @require_http_methods(["DELETE"])
