@@ -1,22 +1,5 @@
-import React, { useEffect, useState } from "react";
+export default function ModelsList({models}) {
 
-export default function ModelsList() {
-  const [models, setModels] = useState([]);
-  const fetchData = async () => {
-    const url = "http://localhost:8100/api/models/"
-
-    const response = await fetch(url);
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log({ "data": data })
-      setModels(data.models);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
     <div className="my-5 container">
       <h1>Models</h1>
@@ -27,6 +10,7 @@ export default function ModelsList() {
             <th>Manufacturer</th>
             <th>Picture</th>
           </tr>
+        </thead>
           <tbody>
             {models.map(model => {
               return (
@@ -34,15 +18,13 @@ export default function ModelsList() {
                   <td>{model.name}</td>
                   <td>{model.manufacturer.name}</td>
                   <td>
-                    <img src={model.picture_url} alt="car" style={{ width:'200px', height: '200px'}} />
+                    <img src={model.picture_url} alt="car model" style={{ width:'100px', height: '100px'}} />
                     </td>
                 </tr>
               )
             })}
           </tbody>
-        </thead>
       </table>
     </div>
   )
-
 }
