@@ -6,14 +6,12 @@ Team:
 * Julio Gomez - Service
 
 ## Design
-Javascript and Bootstrap
+Javascript and Bootstrap, using react!
 
 ## Service microservice
 
-Explain your models and integration with the inventory
-microservice, here.
+made using automobilevo, technicican model, and an appointment model to be able to do a Servicing microservices for this car dealership.
 
 ## Sales microservice
 
-Explain your models and integration with the inventory
-microservice, here.
+made automobilevo models, salesperson, customer, and sale. Using these with the inventory we were given I was able to link them together in react. This allowed me to make a Sale microservice for a car website so that they may access their inventory and mark is as sold by having customers and employees registered within a system.
