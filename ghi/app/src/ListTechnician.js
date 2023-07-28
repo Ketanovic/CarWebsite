@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import App from "./CreateSaleForm";
 
-export default function ListTechnician() {
+function ListTechnician() {
   const [technicians, setTechnicians] = useState([]);
   const fetchData = async () => {
     const url = "http://localhost:8080/api/technicians/"
@@ -43,3 +44,5 @@ export default function ListTechnician() {
   )
 
 }
+
+export default App;

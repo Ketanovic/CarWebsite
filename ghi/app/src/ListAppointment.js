@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import App from "./CreateSaleForm";
 
-export default function AppointmentsList() {
+function AppointmentsList() {
     const [appointments, setAppointments] = useState([]);
     const fetchData = async () => {
         const url = "http://localhost:8080/api/appointments/"
@@ -73,3 +74,5 @@ export default function AppointmentsList() {
         </div>
     )
 }
+
+export default App;

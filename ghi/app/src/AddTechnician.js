@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function AddTechnician() {
+function AddTechnician({ getTechnician }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeId, setEmployeeId] = useState("");
@@ -44,7 +44,13 @@ export default function AddTechnician() {
       setEmployeeId("");
       setFirstName("");
       setLastName("");
+
+      getTechnician();
+
+      alert('Technician created')
     }
+
+
   }
   return (
     <div className="row">
@@ -81,3 +87,26 @@ export default function AddTechnician() {
     </div>
   )
 }
+
+function App() {
+  const [technician, setTechnician] = useState([]);
+
+  async function getTechnician() {
+    const technicianUrl = 'http://localhost:8080/service_rest/technician'
+    const response = await fetch(technicianUrl);
+    if (response.ok) {
+      const data = await response.json();
+      setTechnician(data.technician);
+    }
+  }
+
+  return (
+    <div>
+      <AddTechnician getTechnician={getTechnician} />
+    </div>
+  );
+}
+
+
+
+export default App;
