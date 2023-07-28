@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './ListSalespeople.css';
 
 function ListSalespeople() {
   const [salespeople, setSalespeople] = useState([]);
@@ -6,7 +7,7 @@ function ListSalespeople() {
   useEffect(() => {
     async function fetchSalespeople() {
       try {
-        const response = await fetch('http://localhost:8090/sales_rest/api_salespeople/');
+        const response = await fetch('http://localhost:8090/salespeople/');
         if (!response.ok) {
           throw new Error('Failed to fetch salespeople data');
         }
@@ -23,13 +24,18 @@ function ListSalespeople() {
   return (
     <div>
       <h1>List of Salespeople</h1>
-      <ul>
-        {salespeople.map((salesperson) => (
-          <li key={salesperson.id}>
-            {salesperson.first_name} {salesperson.last_name}
-          </li>
-        ))}
-      </ul>
+      {salespeople.length === 0 ? (
+        <p>No salespeople found.</p>
+      ) : (
+        <ul className="salespeople-list">
+          {salespeople.map((salesperson) => (
+            <li key={salesperson.id}>
+              <strong>{salesperson.first_name} {salesperson.last_name}</strong><br />
+              <span>Employee ID: {salesperson.id}</span><br />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
