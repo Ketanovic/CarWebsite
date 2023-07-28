@@ -1,4 +1,21 @@
-export default function AutomobilesList({automobiles}) {
+import React, { useEffect, useState } from "react";
+
+export default function AutomobilesList({getAutomobiles}) {
+  const [automobiles, setAutomobiles] = useState([]);
+  const fetchData = async () => {
+    const url = "http://localhost:8100/api/automobiles/"
+
+    const response = await fetch(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      setAutomobiles(data.autos);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="my-5 container">
       <h1>Automobiles</h1>

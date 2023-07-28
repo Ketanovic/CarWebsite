@@ -59,7 +59,7 @@ def api_salesperson(request):
             encoder=SalespersonEncoder,
             safe=False
         )
-    elif request.method == "POST":
+    else:
         content = json.loads(request.body)
         employee = Salesperson.objects.create(**content)
         return JsonResponse(
@@ -89,7 +89,7 @@ def api_customer(request):
     if request.method == "GET":
         customers = Customer.objects.all()
         return JsonResponse(
-            {"Customer": customers},
+            {"customers": customers},
             encoder=CustomerEncoder,
             safe=False
         )
@@ -162,7 +162,7 @@ def api_sales(request):
                                 data=json_data,
                                 headers={'Content-Type': 'application/json'})
         if response.status_code != 200:
-            print("auto request failed", response.status_code)
+            print("request failed", response.status_code)
 
         return JsonResponse(
             sale,

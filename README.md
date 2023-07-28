@@ -2,8 +2,8 @@
 
 Team:
 
-* Person 1 - Which microservice?
-* Person 2 - Which microservice?
+* Armin Ketanovic - Sales
+* Julio Gomez - Service
 
 ## Design
 

@@ -1,4 +1,5 @@
 export default function CustomerList({customers}) {
+
   return (
     <div className="my-5 container">
       <h1>Customers</h1>

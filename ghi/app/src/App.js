@@ -5,7 +5,7 @@ import Nav from './Nav';
 import SalespersonForm from './CreateSalesPersonForm';
 import CustomerForm from './CreateCustomerForm';
 import CustomerList from './ListCustomers';
-import SalesForm from "./CreateSaleForm";
+import SaleForm from "./CreateSaleForm";
 import SalesList from "./ListSales";
 import SalespeopleList from "./ListSalespeople";
 import AddAppointment from "./AddAppointment";
@@ -14,7 +14,7 @@ import AppointmentsList from "./ListAppointment";
 import ListTechnician from "./ListTechnician";
 import Manufacturer from "./ListManufacturers";
 import ManufacturerForm from "./CreateManufacturerForm";
-import AutomobilesList from './AutomobileList';
+import AutomobilesList from "./AutomobileList";
 import AutomobilesForm from './CreateAutomobileForm';
 import ModelForm from './CreateModelsForm';
 import ModelsList from './ModelsList';
@@ -44,6 +44,7 @@ function App() {
       setModels(data.models)
     }
   }
+
   async function getAutomobiles() {
     const modelUrl = 'http://localhost:8100/api/automobiles/'
     const response = await fetch(modelUrl)
@@ -92,7 +93,7 @@ function App() {
           <Route path="/customers" element={<CustomerList customers={customers} />} />
           <Route path="/add-customer" element={<CustomerForm getCustomers={getCustomers} />} />
           <Route path="/sales-history" element={<SalesList sales={sales} />} />
-          <Route path="record-sale" element={<SalesForm automobiles={automobiles} salespeople={salespeople} customers={customers} getSales={getSales} />} />
+          <Route path="record-sale" element={<SaleForm automobiles={automobiles} salespeople={salespeople} customers={customers} getSales={getSales} />} />
           <Route path="/technicians" element={<ListTechnician />} />
           <Route path="/add-technician" element={<AddTechnician />} />
           <Route path="/appointments" element={<AppointmentsList />} />
