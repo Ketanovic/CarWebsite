@@ -4,14 +4,14 @@ import SalespeopleForm from './CreateSalespersonForm';
 import SalespeopleList from './SalespeopleList';
 import ManufacturersList from './ManufacturersList';
 import ManufacturerForm from './ManufacturerForm';
-import TechniciansList from './TechniciansList';
-import TechnicianForm from './TechnicianForm';
+import ListTechnician from './ListTechnician';
+import AddTechnician from './AddTechnician';
 import ModelForm from './CreateModelForm';
 import ModelsList from './ModelsList';
 import AutomobilesList from './AutomobilesList';
 import AutomobileForm from './CreateAutomobileForm';
-import AppointmentsList from './AppointmentsList';
-import AppointmentForm from './AppointmentForm';
+import ListAppointment from './ListAppointment';
+import AddAppointment from './AddAppointment.js';
 import Nav from './Nav';
 import React, { useEffect, useState } from "react";
 
@@ -52,8 +52,8 @@ function App() {
           <Route path="/salespeople/create" element={<SalespersonForm getSalespeople={getSalespeople} />} />
           <Route path="/manufacturers" element={<ManufacturersList />} />
           <Route path="/manufacturers/create" element={<ManufacturerForm />} />
-          <Route path="/technicians" element={<TechniciansList />} />
-          <Route path="/technicians/create" element={<TechnicianForm />} />
+          <Route path="/technicians" element={<ListTechnician />} />
+          <Route path="/technicians/create" element={<AddTechnician />} />
           <Route path="/models" element={<ModelsList />} />
           <Route path="/models/create" element={<ModelForm getModels={getModels} />} />
           <Route path="/automobiles" element={<AutomobilesList getAutomobiles={getAutomobiles} />} />
