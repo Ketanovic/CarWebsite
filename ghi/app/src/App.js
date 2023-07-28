@@ -9,9 +9,9 @@ import SaleForm from "./CreateSaleForm";
 import SalesList from "./ListSales";
 import SalespeopleList from "./ListSalespeople";
 import AddAppointment from "./AddAppointment";
-import AddTechnician from "./AddTechnician";
+import TechnicianForm from "./AddTechnician";
 import AppointmentsList from "./ListAppointment";
-import ListTechnician from "./ListTechnician";
+import TechniciansList from "./ListTechnician";
 import Manufacturer from "./ListManufacturers";
 import ManufacturerForm from "./CreateManufacturerForm";
 import AutomobilesList from "./AutomobileList";
@@ -94,8 +94,8 @@ function App() {
           <Route path="/add-customer" element={<CustomerForm getCustomers={getCustomers} />} />
           <Route path="/sales-history" element={<SalesList sales={sales} />} />
           <Route path="record-sale" element={<SaleForm automobiles={automobiles} salespeople={salespeople} customers={customers} getSales={getSales} />} />
-          <Route path="/technicians" element={<ListTechnician />} />
-          <Route path="/add-technician" element={<AddTechnician />} />
+          <Route path="/technicians" element={<TechniciansList />} />
+          <Route path="/add-technician" element={<TechnicianForm />} />
           <Route path="/appointments" element={<AppointmentsList />} />
           <Route path="/create-appointment" element={<AddAppointment />} />
           <Route path="/manufacturers" element={<Manufacturer />} />

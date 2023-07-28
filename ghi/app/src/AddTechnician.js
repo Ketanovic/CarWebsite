@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function AddTechnician({ getTechnician }) {
+export default function TechnicianForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeId, setEmployeeId] = useState("");
@@ -44,13 +44,7 @@ function AddTechnician({ getTechnician }) {
       setEmployeeId("");
       setFirstName("");
       setLastName("");
-
-      getTechnician();
-
-      alert('Technician created')
     }
-
-
   }
   return (
     <div className="row">
@@ -60,22 +54,43 @@ function AddTechnician({ getTechnician }) {
           <form onSubmit={handleSubmit} id="create-technician-form">
 
             <div className="form-floating mb-3">
-              <input onChange={handleFirstNameChange} placeholder="first_name" required type="text"
-              name="firstName" id="firstName" className="form-control" value={firstName}
+              <input
+                onChange={handleFirstNameChange}
+                placeholder="First name"
+                required
+                type="text"
+                name="firstName"
+                id="firstName"
+                className="form-control"
+                value={firstName}
               />
               <label htmlFor="firstName">First Name</label>
             </div>
 
             <div className="form-floating mb-3">
-              <input onChange={handleLastNameChange} placeholder="Last name" required
-                type="text" name="lastName" id="lastName" className="form-control" value={lastName}
+              <input
+                onChange={handleLastNameChange}
+                placeholder="Last name"
+                required
+                type="text"
+                name="lastName"
+                id="lastName"
+                className="form-control"
+                value={lastName}
               />
               <label htmlFor="lastName">Last Name</label>
             </div>
 
             <div className="form-floating mb-3">
-              <input onChange={handleEmployeeIdChange} placeholder="Employee ID" required type="text"
-                name="employeeId" id="employeeId" className="form-control" value={employeeId}
+              <input
+                onChange={handleEmployeeIdChange}
+                placeholder="Employee ID"
+                required
+                type="text"
+                name="employeeId"
+                id="employeeId"
+                className="form-control"
+                value={employeeId}
               />
               <label htmlFor="employeeId">Employee ID</label>
             </div>
@@ -87,26 +102,3 @@ function AddTechnician({ getTechnician }) {
     </div>
   )
 }
-
-function App() {
-  const [technician, setTechnician] = useState([]);
-
-  async function getTechnician() {
-    const technicianUrl = 'http://localhost:8080/service_rest/technician'
-    const response = await fetch(technicianUrl);
-    if (response.ok) {
-      const data = await response.json();
-      setTechnician(data.technician);
-    }
-  }
-
-  return (
-    <div>
-      <AddTechnician getTechnician={getTechnician} />
-    </div>
-  );
-}
-
-
-
-export default App;
