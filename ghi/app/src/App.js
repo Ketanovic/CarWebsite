@@ -58,7 +58,7 @@ function App() {
           <Route path="/add-salesperson" element={<SalespersonForm />} />
           <Route path="/customers" element={<ListCustomers />} />
           <Route path="/add-customer" element={<CustomerForm />} />
-          <Route path="record-sale" element={<SalesForm />} />
+          <Route path="/record-sale" element={<SalesForm />} />
         </Routes>
       </div>
     </BrowserRouter>
