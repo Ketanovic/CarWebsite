@@ -3,9 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
 import SalespersonForm from './CreateSalesPersonForm';
-import Salespeople from './ListSalespeople';
 import CustomerForm from './CreateCustomerForm';
-import Customers from './ListCustomers';
+import ListCustomers from './ListCustomers';
+import AddAppointment from "./AddAppointment";
+import AddTechnician from "./AddTechnician";
+import ListAppointment from "./ListAppointment";
+import ListTechnician from "./ListTechnician";
+import ListSalespeople from "./ListSalespeople";
+
 
 function App() {
   const [salespeople, setSalespeople] = useState([]);
@@ -40,10 +45,10 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/salespeople" element={<ListSalespeople />} />
           <Route path="/add-salesperson" element={<SalespersonForm />} />
-          <Route path="/salespeople" element={<Salespeople />} />
+          <Route path="/customers" element={<ListCustomers />} />
           <Route path="/add-customer" element={<CustomerForm />} />
-          <Route path="/customers" element={<Customers />} />
         </Routes>
       </div>
     </BrowserRouter>
