@@ -5,16 +5,14 @@ import Nav from './Nav';
 import SalespersonForm from './CreateSalesPersonForm';
 import CustomerForm from './CreateCustomerForm';
 import ListCustomers from './ListCustomers';
-import AddAppointment from "./AddAppointment";
-import AddTechnician from "./AddTechnician";
-import ListAppointment from "./ListAppointment";
-import ListTechnician from "./ListTechnician";
+import SalesForm from "./CreateSaleForm";
 import ListSalespeople from "./ListSalespeople";
 
 
 function App() {
   const [salespeople, setSalespeople] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [sales, setSales]= useState([]);
 
   async function fetchSalespeople() {
     const salespeopleUrl = 'http://localhost:8090/api/salespeople/';
@@ -34,10 +32,21 @@ function App() {
     }
   }
 
+  async function fetchSales() {
+    const salesUrl = 'http://localhost:8090/api/sales';
+    const response = await fetch(salesUrl);
+    if (response.ok) {
+      const data = await response.json();
+      setSales(data.sales);
+    }
+  }
   useEffect(() => {
     fetchSalespeople();
     fetchCustomers();
+    fetchSales();
   }, []);
+
+
 
   return (
     <BrowserRouter>
@@ -49,6 +58,7 @@ function App() {
           <Route path="/add-salesperson" element={<SalespersonForm />} />
           <Route path="/customers" element={<ListCustomers />} />
           <Route path="/add-customer" element={<CustomerForm />} />
+          <Route path="record-sale" element={<SalesForm />} />
         </Routes>
       </div>
     </BrowserRouter>

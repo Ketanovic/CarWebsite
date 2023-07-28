@@ -31,7 +31,7 @@ function SalespersonForm({ getSalespeople }) {
 
         getSalespeople();
 
-        window.location.href = 'http://localhost:3000/salespeople/';
+        alert('Salesperson was created successfully!');
       }
     } catch (error) {
       console.error('Failed to create a salesperson:', error);
