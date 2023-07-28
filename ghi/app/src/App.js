@@ -5,7 +5,7 @@ import Nav from './Nav';
 import SalespersonForm from './CreateSalesPersonForm';
 import CustomerForm from './CreateCustomerForm';
 import CustomerList from './ListCustomers';
-import SaleForm from "./CreateSaleForm";
+import SalesForm from "./CreateSaleForm";
 import SalesList from "./ListSales";
 import SalespeopleList from "./ListSalespeople";
 import AddAppointment from "./AddAppointment";
@@ -93,7 +93,7 @@ function App() {
           <Route path="/customers" element={<CustomerList customers={customers} />} />
           <Route path="/add-customer" element={<CustomerForm getCustomers={getCustomers} />} />
           <Route path="/sales-history" element={<SalesList sales={sales} />} />
-          <Route path="record-sale" element={<SaleForm automobiles={automobiles} salespeople={salespeople} customers={customers} getSales={getSales} />} />
+          <Route path="/record-sale" element={<SalesForm automobiles={automobiles} salespeople={salespeople} customers={customers} getSales={getSales} />} />
           <Route path="/technicians" element={<TechniciansList />} />
           <Route path="/add-technician" element={<TechnicianForm />} />
           <Route path="/appointments" element={<AppointmentsList />} />

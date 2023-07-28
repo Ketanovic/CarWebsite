@@ -6,6 +6,7 @@ Team:
 * Julio Gomez - Service
 
 ## Design
+Javascript and Bootstrap
 
 ## Service microservice
 

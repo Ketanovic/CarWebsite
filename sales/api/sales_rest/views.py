@@ -133,7 +133,7 @@ def api_sales(request):
         try:
             auto_vin = content["automobile"]
             autoVO = AutomobileVO.objects.get(vin=auto_vin)
-            if autoVO.sold == False:
+            if autoVO.sold is False:
                 content["automobile"] = autoVO
             salesperson_id = content["salesperson"]
             salesperson = Salesperson.objects.get(pk=salesperson_id)
@@ -143,7 +143,7 @@ def api_sales(request):
             content["customer"] = customer
 
         except AutomobileVO.DoesNotExist:
-            raise Http404("Auto does not exist")
+            raise Http404("Car does not exist")
 
         except Salesperson.DoesNotExist:
             raise Http404("Salesperson does not exist")
@@ -162,7 +162,7 @@ def api_sales(request):
                                 data=json_data,
                                 headers={'Content-Type': 'application/json'})
         if response.status_code != 200:
-            print("request failed", response.status_code)
+            print("Failed Request", response.status_code)
 
         return JsonResponse(
             sale,
