@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function ModelForm({ getModels}) {
+export default function ModelForm({ getModels }) {
     const [name, setName] = useState('');
     const [picture_url, setPictureUrl] = useState('');
     const [manufacturer, setManufacturer] = useState('');

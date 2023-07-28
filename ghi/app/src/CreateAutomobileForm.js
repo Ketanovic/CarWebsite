@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function AutomobileForm({getAutomobiles}) {
+export default function AutomobileForm({ getAutomobiles }) {
     const [color, setColor] = useState('');
     const [year, setYear] = useState('');
     const [vin, setVIN] = useState('');
