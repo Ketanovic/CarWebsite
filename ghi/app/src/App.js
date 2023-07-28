@@ -27,8 +27,23 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
+<<<<<<< HEAD
           <Route path="/add-salesperson" element={<SalespersonForm />} />
           <Route path="/salespeople" element={<Salespeople />} />
+=======
+          <Route path="/salespeople" element={<SalespeopleList salespeople={salespeople} />} />
+          <Route path="/salespeople/create" element={<SalespersonForm getSalespeople={getSalespeople} />} />
+          <Route path="/manufacturers" element={<ManufacturersList />} />
+          <Route path="/manufacturers/create" element={<ManufacturerForm />} />
+          <Route path="/technicians" element={<ListTechnician />} />
+          <Route path="/technicians/create" element={<AddTechnician />} />
+          <Route path="/models" element={<ModelsList />} />
+          <Route path="/models/create" element={<ModelForm getModels={getModels} />} />
+          <Route path="/automobiles" element={<AutomobilesList getAutomobiles={getAutomobiles} />} />
+          <Route path="/automobiles/create" element={<AutomobileForm getAutomobiles={getAutomobiles} />} />
+          <Route path="/appointments" element={<AppointmentsList />} />
+          <Route path="/appointments/create" element={<AppointmentForm />} />
+>>>>>>> a83c001945c862beffb591cd8ab4de82ab7187bf
         </Routes>
       </div>
     </BrowserRouter>
