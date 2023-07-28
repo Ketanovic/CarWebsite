@@ -5,20 +5,21 @@ function ListCustomers() {
 
   useEffect(() => {
     async function fetchCustomers() {
-        try {
-            const response = await fetch('http://localhost:8090/customers/');
-            if (!response.ok) {
-            throw new Error('Failed to fetch customers data');
+      try {
+        const response = await fetch('http://localhost:8090/customers/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch customers data');
         }
         const data = await response.json();
         setCustomers(data.Customer);
-    } catch (error) {
-      console.error(error);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
 
-  fetchCustomers();
+    fetchCustomers();
   }, []);
+
   return (
     <div>
       <h1>List of Customers</h1>
@@ -29,8 +30,8 @@ function ListCustomers() {
           {customers.map((customer) => (
             <li key={customer.id}>
               <strong>{customer.first_name} {customer.last_name}</strong><br />
-              <span>Email: {customer.email}</span><br />
-              <span>Phone: {customer.phone}</span><br />
+              <span>Address: {customer.address}</span><br />
+              <span>Phone Number: {customer.phone_number}</span><br />
               <span>Customer ID: {customer.id}</span><br />
             </li>
           ))}
