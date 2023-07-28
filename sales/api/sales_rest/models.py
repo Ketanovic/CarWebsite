@@ -1,10 +1,11 @@
 from django.db import models
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 
 
 class AutomobileVO(models.Model):
-    vin = models.CharField(max_length=17, unique=True, default='')
+    vin = models.CharField(max_length=17, unique=True)
     sold = models.BooleanField(default=False)
 
 
@@ -41,6 +42,3 @@ class Sale(models.Model):
         related_name="sale",
         on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def get_api_url(self):
-        return reverse("api_sales", kwargs={"id": self.id})

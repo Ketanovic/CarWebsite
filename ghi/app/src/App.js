@@ -7,6 +7,7 @@ import CustomerForm from './CreateCustomerForm';
 import ListCustomers from './ListCustomers';
 import SalesForm from "./CreateSaleForm";
 import ListSalespeople from "./ListSalespeople";
+import ListSales from "./ListSales";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
       setSales(data.sales);
     }
   }
+
   useEffect(() => {
     fetchSalespeople();
     fetchCustomers();
@@ -59,6 +61,7 @@ function App() {
           <Route path="/customers" element={<ListCustomers />} />
           <Route path="/add-customer" element={<CustomerForm />} />
           <Route path="/record-sale" element={<SalesForm />} />
+          <Route path="/sales-history" element={<ListSales sales={sales}/>} />
         </Routes>
       </div>
     </BrowserRouter>
