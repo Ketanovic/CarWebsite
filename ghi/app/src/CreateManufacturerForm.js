@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 export default function ManufacturerForm() {
   const [name, setName] = useState("");
-  const [isSuccessful, setIsSuccessful] = useState(false);
-  useEffect(() => {
-    if (isSuccessful) {
-      const timer = setTimeout(() => {
-        setIsSuccessful(false);
-      }, 10000);
-      return () => clearTimeout(timer);
-    }
-  }, [isSuccessful]);
-
 
   function handleNameChange(event) {
     const value = event.target.value;
@@ -33,13 +23,11 @@ export default function ManufacturerForm() {
     };
 
     const response = await fetch(manufacturerUrl, fetchConfig);
-    console.log(response)
     if (response.ok) {
       const newManufacturer = await response.json();
-      console.log(newManufacturer)
 
-      setIsSuccessful(true);
       setName("");
+      window.location.href = 'http://localhost:3000/manufacturers/';
     }
   };
 
@@ -60,7 +48,7 @@ export default function ManufacturerForm() {
                 className="form-control"
                 value={name}
               />
-              <label htmlFor="manufacturer">Manufacturer Name</label>
+              <label htmlFor="name">Manufacturer Name</label>
             </div>
             <button className="btn btn-primary">Create</button>
           </form>

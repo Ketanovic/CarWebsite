@@ -4,54 +4,81 @@ import MainPage from './MainPage';
 import Nav from './Nav';
 import SalespersonForm from './CreateSalesPersonForm';
 import CustomerForm from './CreateCustomerForm';
-import ListCustomers from './ListCustomers';
+import CustomerList from './ListCustomers';
 import SalesForm from "./CreateSaleForm";
-import ListSalespeople from "./ListSalespeople";
+import SalesList from "./ListSales";
+import SalespeopleList from "./ListSalespeople";
 import AddAppointment from "./AddAppointment";
 import AddTechnician from "./AddTechnician";
 import AppointmentsList from "./ListAppointment";
 import ListTechnician from "./ListTechnician";
-
+import Manufacturer from "./ListManufacturers";
+import ManufacturerForm from "./CreateManufacturerForm";
+import AutomobilesList from './AutomobileList';
+import AutomobilesForm from './CreateAutomobileForm';
+import ModelForm from './CreateModelsForm';
+import ModelsList from './ModelsList';
+import SalespersonHistory from "./SalespersonHistory";
 
 function App() {
+  const [models, setModels] = useState([]);
+  const [automobiles, setAutomobiles] = useState([]);
   const [salespeople, setSalespeople] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [sales, setSales]= useState([]);
+  const [sales, setSales] = useState([]);
 
-  async function fetchSalespeople() {
-    const salespeopleUrl = 'http://localhost:8090/api/salespeople/';
-    const response = await fetch(salespeopleUrl);
+  async function getSales() {
+    const salesUrl = 'http://localhost:8090/api/sales/'
+    const response = await fetch(salesUrl)
     if (response.ok) {
       const data = await response.json();
-      setSalespeople(data.salespeople);
+      setSales(data.sales)
     }
   }
 
-  async function fetchCustomers() {
-    const customersUrl = 'http://localhost:8090/api/customers/';
-    const response = await fetch(customersUrl);
+  async function getModels() {
+    const modelUrl = 'http://localhost:8100/api/models/'
+    const response = await fetch(modelUrl)
     if (response.ok) {
       const data = await response.json();
-      setCustomers(data.customers);
+      setModels(data.models)
+    }
+  }
+  async function getAutomobiles() {
+    const modelUrl = 'http://localhost:8100/api/automobiles/'
+    const response = await fetch(modelUrl)
+    if (response.ok) {
+      const data = await response.json();
+      setAutomobiles(data.automobiles)
     }
   }
 
-  async function fetchSales() {
-    const salesUrl = 'http://localhost:8090/api/sales';
-    const response = await fetch(salesUrl);
+  async function getSalespeople() {
+    const salespeopleUrl = 'http://localhost:8090/api/salespeople/'
+    const response = await fetch(salespeopleUrl)
     if (response.ok) {
       const data = await response.json();
-      setSales(data.sales);
+      setSalespeople(data.salespeople)
     }
   }
+
+  async function getCustomers() {
+    const customerUrl = 'http://localhost:8090/api/customers/'
+    const response = await fetch(customerUrl)
+    if (response.ok) {
+      const data = await response.json();
+      setCustomers(data.customers)
+    }
+  }
+
 
   useEffect(() => {
-    fetchSalespeople();
-    fetchCustomers();
-    fetchSales();
-  }, []);
-
-
+    getModels();
+    getSales();
+    getAutomobiles();
+    getSalespeople();
+    getCustomers();
+  }, [])
 
   return (
     <BrowserRouter>
@@ -59,16 +86,23 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/salespeople" element={<ListSalespeople />} />
-          <Route path="/add-salesperson" element={<SalespersonForm />} />
-          <Route path="/customers" element={<ListCustomers />} />
-          <Route path="/add-customer" element={<CustomerForm />} />
-          <Route path="record-sale" element={<SalesForm />} />
+          <Route path="/salespeople" element={<SalespeopleList salespeople={salespeople} />} />
+          <Route path="/add-salesperson" element={<SalespersonForm getSalespeople={getSalespeople} />} />
+          <Route path="/salesperson-history" element={<SalespersonHistory salespeople={salespeople} sales={sales} />} />
+          <Route path="/customers" element={<CustomerList customers={customers} />} />
+          <Route path="/add-customer" element={<CustomerForm getCustomers={getCustomers} />} />
+          <Route path="/sales-history" element={<SalesList sales={sales} />} />
+          <Route path="record-sale" element={<SalesForm automobiles={automobiles} salespeople={salespeople} customers={customers} getSales={getSales} />} />
           <Route path="/technicians" element={<ListTechnician />} />
           <Route path="/add-technician" element={<AddTechnician />} />
           <Route path="/appointments" element={<AppointmentsList />} />
           <Route path="/create-appointment" element={<AddAppointment />} />
-
+          <Route path="/manufacturers" element={<Manufacturer />} />
+          <Route path="/create-manufacturer" element={<ManufacturerForm />} />
+          <Route path="/vehicle-models" element={<ModelsList models={models} />} />
+          <Route path="/create-vehicle-model" element={<ModelForm getModels={getModels} />} />
+          <Route path="/inventory" element={<AutomobilesList automobiles={automobiles} />} />
+          <Route path="/create-automobile" element={<AutomobilesForm getAutomobiles={getAutomobiles} />} />
         </Routes>
       </div>
     </BrowserRouter>

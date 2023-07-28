@@ -1,43 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import './ListSalespeople.css';
-
-function ListSalespeople() {
-  const [salespeople, setSalespeople] = useState([]);
-
-  useEffect(() => {
-    async function fetchSalespeople() {
-      try {
-        const response = await fetch('http://localhost:8090/salespeople/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch salespeople data');
-        }
-        const data = await response.json();
-        setSalespeople(data.salespeople);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchSalespeople();
-  }, []);
-
+export default function SalespeopleList({salespeople}) {
   return (
-    <div>
-      <h1>List of Salespeople</h1>
-      {salespeople.length === 0 ? (
-        <p>No salespeople found.</p>
-      ) : (
-        <ul className="salespeople-list">
-          {salespeople.map((salesperson) => (
-            <li key={salesperson.id}>
-              <strong>{salesperson.first_name} {salesperson.last_name}</strong><br />
-              <span>Employee ID: {salesperson.id}</span><br />
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="my-5 container">
+      <h1>Salespeople</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>Employee ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+          </tr>
+        </thead>
+          <tbody>
+            {salespeople.map(salesperson => {
+              return (
+                <tr key={salesperson.pk}>
+                  <td>{salesperson.employee_id}</td>
+                  <td>{salesperson.first_name}</td>
+                  <td>{salesperson.last_name}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+      </table>
     </div>
-  );
+  )
 }
-
-export default ListSalespeople;

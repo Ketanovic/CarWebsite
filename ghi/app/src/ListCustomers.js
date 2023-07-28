@@ -1,44 +1,29 @@
-import React, { useState, useEffect } from 'react';
-
-function ListCustomers() {
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    async function fetchCustomers() {
-      try {
-        const response = await fetch('http://localhost:8090/customers/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch customers data');
-        }
-        const data = await response.json();
-        setCustomers(data.Customer);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchCustomers();
-  }, []);
-
+export default function CustomerList({customers}) {
   return (
-    <div>
-      <h1>List of Customers</h1>
-      {customers.length === 0 ? (
-        <p>No customers found.</p>
-      ) : (
-        <ul className="customers-list">
-          {customers.map((customer) => (
-            <li key={customer.id}>
-              <strong>{customer.first_name} {customer.last_name}</strong><br />
-              <span>Address: {customer.address}</span><br />
-              <span>Phone Number: {customer.phone_number}</span><br />
-              <span>Customer ID: {customer.id}</span><br />
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="my-5 container">
+      <h1>Customers</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+          </tr>
+        </thead>
+          <tbody>
+            {customers.map(customer => {
+              return (
+                <tr key={customer.pk}>
+                  <td>{customer.first_name}</td>
+                  <td>{customer.last_name}</td>
+                  <td>{customer.address}</td>
+                  <td>{customer.phone_number}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+      </table>
     </div>
-  );
+  )
 }
-
-export default ListCustomers;

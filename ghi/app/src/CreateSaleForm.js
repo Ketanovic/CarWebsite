@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ListSales from "./ListSales";
+import SalesList from "./ListSales";
 
 export default function SaleForm({automobiles, salespeople, customers, getSales}) {
     const [price, setPrice] = useState('');
@@ -31,7 +31,6 @@ export default function SaleForm({automobiles, salespeople, customers, getSales}
             setAutomobile('');
             setSalesperson('');
             setCustomer('');
-
 
             getSales();
             window.location.href = 'http://localhost:3000/sales';
