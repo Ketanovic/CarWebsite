@@ -53,13 +53,12 @@ def api_delete_technician(request, id):
 
 
 @require_http_methods(["GET", "POST"])
-def api_list_appointments(request, id=None):
+def api_list_appointments(request):
     if request.method == "GET":
-        appointments = Appointment.objects.all().values()
+        appointments = Appointment.objects.all()
         return JsonResponse(
-            {"appointments": list(appointments)},
+            {"appointments": appointments},
             encoder=AppointmentListEncoder,
-            safe=False
         )
     else:
         content = json.loads(request.body)
@@ -72,15 +71,13 @@ def api_list_appointments(request, id=None):
                 return JsonResponse(
                     {"message": "Does not match any technicians"}, status=400
                 )
-            vin = content["vin"]
-            if AutomobileVO.objects.filter(vin=vin).count() == 1:
-                content["is_vip"] = True
             appointment = Appointment.objects.create(**content)
             return JsonResponse(appointment, encoder=AppointmentListEncoder, safe=False)
         except Exception:
             response = JsonResponse({"message": "Could not create appointment"})
             response.status_code = 400
             return response
+
 
 
 @require_http_methods(["DELETE"])

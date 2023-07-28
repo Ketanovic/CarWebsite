@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import App from "./CreateSaleForm";
 
-export default function AddAppointment() {
+function AddAppointment() {
     const [technicians, setTechnicians] = useState([])
 
     useEffect(() => {
@@ -136,3 +137,5 @@ export default function AddAppointment() {
 
 
 }
+
+export default App;

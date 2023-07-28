@@ -7,7 +7,10 @@ import CustomerForm from './CreateCustomerForm';
 import ListCustomers from './ListCustomers';
 import SalesForm from "./CreateSaleForm";
 import ListSalespeople from "./ListSalespeople";
-import ListSales from "./ListSales";
+import AddAppointment from "./AddAppointment";
+import AddTechnician from "./AddTechnician";
+import AppointmentsList from "./ListAppointment";
+import ListTechnician from "./ListTechnician";
 
 
 function App() {
@@ -60,8 +63,12 @@ function App() {
           <Route path="/add-salesperson" element={<SalespersonForm />} />
           <Route path="/customers" element={<ListCustomers />} />
           <Route path="/add-customer" element={<CustomerForm />} />
-          <Route path="/record-sale" element={<SalesForm />} />
-          <Route path="/sales-history" element={<ListSales sales={sales}/>} />
+          <Route path="record-sale" element={<SalesForm />} />
+          <Route path="/technicians" element={<ListTechnician />} />
+          <Route path="/add-technician" element={<AddTechnician />} />
+          <Route path="/appointments" element={<AppointmentsList />} />
+          <Route path="/create-appointment" element={<AddAppointment />} />
+
         </Routes>
       </div>
     </BrowserRouter>
