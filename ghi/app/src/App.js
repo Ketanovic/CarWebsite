@@ -3,9 +3,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
 import SalespersonForm from './CreateSalespersonForm';
-import Salespeople from './ListSalespeople';
+import ListSalespeople from './ListSalespeople';
 import CustomerForm from './CreateCustomerForm';
-import Customers from './ListCustomers';
+import ListCustomers from './ListCustomers';
+import AddAppointment from "./AddAppointment";
+import AddTechnician from "./AddTechnician";
+import ListAppointment from "./ListAppointment";
+import ListTechnician from "./ListTechnician";
+import ListSalespeople from "./ListSalespeople";
+
 
 function App() {
   const [salespeople, setSalespeople] = useState([]);
@@ -40,11 +46,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
-<<<<<<< HEAD
-          <Route path="/add-salesperson" element={<SalespersonForm />} />
-          <Route path="/salespeople" element={<Salespeople />} />
-=======
-          <Route path="/salespeople" element={<SalespeopleList salespeople={salespeople} />} />
+          <Route path="/salespeople" element={<ListSalespeople salespeople={salespeople} />} />
           <Route path="/salespeople/create" element={<SalespersonForm getSalespeople={getSalespeople} />} />
           <Route path="/manufacturers" element={<ManufacturersList />} />
           <Route path="/manufacturers/create" element={<ManufacturerForm />} />
@@ -54,9 +56,10 @@ function App() {
           <Route path="/models/create" element={<ModelForm getModels={getModels} />} />
           <Route path="/automobiles" element={<AutomobilesList getAutomobiles={getAutomobiles} />} />
           <Route path="/automobiles/create" element={<AutomobileForm getAutomobiles={getAutomobiles} />} />
-          <Route path="/appointments" element={<AppointmentsList />} />
-          <Route path="/appointments/create" element={<AppointmentForm />} />
->>>>>>> a83c001945c862beffb591cd8ab4de82ab7187bf
+          <Route path="/appointments" element={<ListAppointment />} />
+          <Route path="/appointments/create" element={<AddAppointment />} />
+          <Route path="/customers" element={<ListCustomers />} />
+          <Route path="/customers/create" element={<CustomerForm />} />
         </Routes>
       </div>
     </BrowserRouter>
